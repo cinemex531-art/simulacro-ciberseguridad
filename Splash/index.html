@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ejercicio de Concienciación — Seguridad</title>
+  <style>
+    :root{
+      --card:#121416;
+      --accent:#ff4d4d;
+      --muted:#bfc3c7;
+      --radius:14px;
+      --maxw:820px;
+      font-family: Inter, Roboto, Arial, Helvetica, sans-serif;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0b0c0d 0%, #101214 100%);color:#fff}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+    .card{
+      width:100%;max-width:var(--maxw);
+      background:linear-gradient(180deg,var(--card),#0d0e10);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(2,6,10,0.7);
+      padding:28px;display:grid;grid-template-columns:170px 1fr;gap:24px;align-items:center
+    }
+    .media{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .media img.siren{width:150px;height:auto;border-radius:10px}
+    .media img.icon{width:120px;height:auto;animation:pulse 1.6s infinite}
+    .right{min-width:0}
+    h1{margin:0 0 8px;font-size:26px;letter-spacing:0.2px}
+    p.lead{margin:0 0 14px;color:var(--muted);line-height:1.35}
+    .btn-wrap{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;cursor:pointer}
+    .btn.primary{background:var(--accent);color:#fff;border:0}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#d2d6da}
+    .small{font-size:13px;color:#9ea3a8;margin-top:12px}
+    .legal{font-size:12px;color:#8f9396;margin-top:10px}
+    .logo-wrap{margin-top:18px;text-align:center;opacity:.8}
+    .logo-wrap img{height:40px}
+    @media (max-width:720px){
+      .card{grid-template-columns:1fr;justify-items:center;text-align:center;padding:22px}
+      h1{font-size:22px}
+    }
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="dialog" aria-labelledby="title" aria-describedby="desc">
+      <!-- COLUMNA IZQUIERDA: SIRENA GIF + IMAGEN PRINCIPAL -->
+      <div class="media">
+        <img class="siren" src="sirena.gif" alt="Sirena de alerta animada" onerror="this.style.display='none'">
+        <img class="icon" src="alerta.png" alt="Alerta de seguridad">
+      </div>
+
+      <!-- COLUMNA DERECHA: TEXTO Y BOTONES -->
+      <div class="right">
+        <h1 id="title">Fuiste hackeado</h1>
+        <p id="desc" class="lead">
+          Este es un ejercicio autorizado de concienciación en seguridad. <strong>No entres en pánico.</strong><br>
+          No se ha accedido a tus datos personales; el objetivo es sensibilizar sobre el riesgo de conectarse a redes no seguras.
+        </p>
+
+        <div class="btn-wrap" role="group" aria-label="Acciones">
+          <a class="btn primary" href="#" onclick="submitAndContinue(event)">Entendido — continuar</a>
+          <a class="btn secondary" href="https://www.incibe.es" target="_blank" rel="noopener">Consejos rápidos</a>
+        </div>
+
+        <div class="small">
+          ¿Dudas? Contacta a: <a href="mailto:seguridad@tuempresa.mx" style="color:#e7edf1">seguridad.informacion@cinemex.net</a>
+        </div>
+
+        <div class="legal">
+          Nota: este mensaje forma parte de un simulacro de capacitación.
+     
+        </div>
+
+        <div class="logo-wrap">
+          <img src="logo.png" alt="Logo de la organización" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO AUTOMÁTICO -->
+  <audio id="sirenAudio" src="sirena.mp3" preload="auto" loop></audio>
+
+  <script>
+    const audioEl = document.getElementById('sirenAudio');
+
+    // Volumen ajustado
+    audioEl.volume = 0.85;
+
+    // Intentar reproducir automáticamente al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+      playAudio();
+    });
+
+    // En caso de que el navegador bloquee autoplay, lo desbloquea al primer toque
+    ['click', 'touchstart', 'keydown'].forEach(ev => {
+      document.addEventListener(ev, () => {
+        playAudio();
+      }, { once: true });
+    });
+
+    function playAudio() {
+      audioEl.muted = false;
+      audioEl.play().catch(() => {
+        // Algunos navegadores requieren interacción, se intentará de nuevo al primer toque
+      });
+    }
+
+    // Botón principal
+    function submitAndContinue(evt){
+      evt.preventDefault();
+      alert("Simulación completada. Gracias por participar.");
+    }
+  </script>
+</body>
+</html>
+
