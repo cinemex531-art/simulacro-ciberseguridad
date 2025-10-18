@@ -1,176 +1,232 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Simulación de Seguridad | Grupo Cinemex</title>
-  <meta name="theme-color" content="#111111" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>⚠️ SIMULACIÓN - BRECHA CRÍTICA | Ciberseguridad Cinemex</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23b91c1c'/%3E%3C/svg%3E">
 
-  <style>
-    :root{
-      --bg-1:#0c0c0f; --bg-2:#1a0f12;
-      --text:#e6e6e9; --muted:#b8b8bf;
-      --accent:#ef4444; --accent2:#fb7185; --focus:#93c5fd;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1100px 520px at 50% -10%, #2a0a0a 0%, transparent 45%),
-        linear-gradient(180deg, #150a0c, #0c0c0f);
-      display:flex;align-items:center;justify-content:center;
-      padding:24px;
-    }
-    .card{
-      position:relative;
-      width:min(820px,100%);
-      background:linear-gradient(180deg,#1a1b20,#131419 70%);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:20px;
-      padding:28px 24px 22px;
-      box-shadow:
-        0 20px 50px rgba(0,0,0,.60),
-        0 0 0 1px rgba(255,255,255,.04),
-        0 0 60px rgba(239,68,68,.18);
-      overflow:hidden;
-    }
+<style>
+  :root{
+    --bg:#000; --red:#ff1f1f; --muted:#9aa0a6; --mono:'Courier New', Courier, monospace;
+    --focus:#93c5fd;
+    --green:#9fe2a6;              /* verde de consola */
+    --green-border: rgba(159,226,166,.35);
+    --green-bg: rgba(159,226,166,.12);
+  }
+  html,body{height:100%;margin:0;background:var(--bg);font-family:var(--mono);color:#fff;overflow:hidden}
 
-    .hero{display:grid;place-items:center;padding:8px 0 10px}
-    .siren{
-      width:min(220px,60vw);
-      filter:drop-shadow(0 8px 22px rgba(239,68,68,.45));
-      animation:float 3s ease-in-out infinite
-    }
-    .bulb{animation:pulse 1.2s ease-in-out infinite;transform-origin:center 65%}
-    .glow{opacity:.9;animation:glow 1.2s ease-in-out infinite}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-    @keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px}
+  .stage{width:min(1100px,96vw);height:min(640px,86vh);position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06);box-shadow:0 20px 60px rgba(0,0,0,.7);background:linear-gradient(180deg,#000 0%, #050505 60%)}
 
-    h1{margin:6px 0 12px;text-align:center;font-size:clamp(22px,2.8vw,36px);color:#f3f4f6;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.35)}
-    .lead{margin:0 auto 14px;text-align:center;color:#e5e7eb;font-size:clamp(14px,1.6vw,18px);line-height:1.5;width:min(62ch,92%)}
-    .notice{text-align:center;color:var(--muted);font-size:14px;margin-top:2px}
-    .btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0 8px}
-    .btn{border:0;border-radius:14px;padding:14px 18px;font-weight:700;cursor:pointer;transition:transform .06s,background .2s,box-shadow .2s}
-    .btn:focus-visible{box-shadow:0 0 0 3px var(--focus)}
-    .btn-primary{background:linear-gradient(180deg,var(--accent),#dc2626);color:#fff;box-shadow:0 8px 18px rgba(239,68,68,.28)}
-    .btn-primary:hover{background:linear-gradient(180deg,var(--accent2),#ef4444)}
-    .btn-primary:active{transform:translateY(1px)}
-    .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.12)}
-    .btn-ghost:hover{background:rgba(255,255,255,.10)}
-    a{color:#93c5fd;text-decoration:none} a:hover{text-decoration:underline}
+  /* Matrix */
+  #matrixCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;mix-blend-mode:screen;pointer-events:none}
 
-    .ok{display:none;text-align:center;padding:8px 6px 2px}
-    .ok.show{display:block}
-    .ok .ico{font-size:32px}
+  /* CRT y efectos */
+  .crt{position:absolute;inset:0;z-index:5;pointer-events:none;background-image:linear-gradient(transparent 80%, rgba(255,255,255,0.01) 81%),linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);background-size:100% 3px, 3px 100%;opacity:.06;animation: crtScroll .5s infinite linear}
+  @keyframes crtScroll{from{background-position:0 0,0 0}to{background-position:0 6px,6px 0}}
+  .flicker{position:absolute;inset:0;z-index:6;pointer-events:none;mix-blend-mode:screen;opacity:0.04;background:radial-gradient(ellipse at center, rgba(255,255,255,0.06), transparent 30%);animation: screenFlicker .18s infinite}
+  @keyframes screenFlicker{0%{opacity:.04}10%{opacity:.08}20%{opacity:.02}30%{opacity:.06}100%{opacity:.04}}
+  .strobe{position:absolute;inset:0;z-index:8;pointer-events:none;background:linear-gradient(180deg, rgba(255,0,0,0.02), rgba(0,0,0,0));opacity:0;animation: strobeAnim 1.2s infinite steps(2);mix-blend-mode:screen}
+  @keyframes strobeAnim{0%{opacity:0}10%{opacity:.65}20%{opacity:0}30%{opacity:.75}100%{opacity:0}}
 
-    /* MODAL */
-    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);align-items:center;justify-content:center;z-index:1000}
-    .modal{position:relative;width:min(720px,100%);background:#121216;border:1px solid #26262d;border-radius:18px;padding:22px;color:#fff}
-    .close-x{position:absolute;top:12px;right:16px;background:transparent;border:0;color:#fff;font-size:26px;cursor:pointer;opacity:.9}
-    .close-x:hover{opacity:1}
-    .modal h2{margin:6px 0 10px}
-    .modal ul{margin:0 0 14px;padding-left:20px;line-height:1.55}
+  /* Título y consola */
+  .hacked{position:absolute;z-index:10;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center;pointer-events:none}
+  .hacked h1{font-size:clamp(28px,5vw,64px);letter-spacing:2px;margin:0;color:var(--red);text-shadow:0 6px 28px rgba(255,31,31,.18), 0 1px 0 rgba(0,0,0,.6);mix-blend-mode:screen}
+  .glitch{position:relative;display:inline-block}
+  .glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%}
+  .glitch::before{left:2px;text-shadow:-2px 0 cyan;animation:glitchTop 2s infinite linear;opacity:.85}
+  .glitch::after{left:-2px;text-shadow:2px 0 magenta;animation:glitchBottom 2.3s infinite linear;opacity:.85}
+  @keyframes glitchTop{0%{transform:translateY(0)}20%{transform:translateY(-2px) skewX(-2deg)}40%{transform:translateY(0)}60%{transform:translateY(-1px)}100%{transform:translateY(0)}}
+  @keyframes glitchBottom{0%{transform:translateY(0)}25%{transform:translateY(2px) skewX(2deg)}50%{transform:translateY(0)}75%{transform:translateY(1px)}100%{transform:translateY(0)}}
 
-    /* RESPONSIVE */
-    @media (max-width:480px){
-      body{padding:12px}
-      .card{padding:16px;border-radius:14px}
-      h1{text-align:left;font-size:20px;line-height:1.25}
-      .lead{width:100%;text-align:left;font-size:15px;line-height:1.45;margin:8px 0 14px}
-      .btns{flex-direction:column;gap:10px;align-items:stretch}
-      .btn{width:100%;justify-content:center}
-      .notice{text-align:left;font-size:13px}
-      .modal{padding:18px}
-      .close-x{font-size:24px}
-    }
-  </style>
+  .console{width:82%;max-width:980px;min-height:140px;background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,.04);padding:18px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.6);color:var(--green);font-size:15px;text-align:left;line-height:1.35;pointer-events:auto;position:relative;overflow:hidden}
+  .cursor{display:inline-block;width:10px;background:var(--green);margin-left:6px;animation:blink .8s steps(2) infinite;height:18px;vertical-align:middle}
+  @keyframes blink{0%{opacity:1}50%{opacity:0}100%{opacity:1}}
+
+  /* Calavera */
+  .skull{position:absolute;right:18px;bottom:18px;z-index:12;width:160px;height:160px;opacity:.92;transform:rotate(-8deg);filter:drop-shadow(0 10px 30px rgba(0,0,0,.7));animation:skullFloat 6s ease-in-out infinite;pointer-events:none}
+  @keyframes skullFloat{0%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-10px) rotate(6deg)}100%{transform:translateY(0) rotate(-6deg)}}
+
+  /* Botonera píldora (solo “Consejos rápidos”) */
+  .cta{position:absolute;z-index:20;left:0;right:0;bottom:70px;display:flex;justify-content:center}
+  .pill{appearance:none;border:none;border-radius:999px;padding:14px 22px;font-weight:800;letter-spacing:.2px;cursor:pointer;transition:transform .06s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease;line-height:1}
+  .pill:focus-visible{outline:3px solid var(--focus)}
+  .pill-ghost{
+    color:var(--green);
+    background: var(--green-bg);
+    border:1px solid var(--green-border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .pill-ghost:hover{
+    background: rgba(159,226,166,.18);
+    border-color: rgba(159,226,166,.55);
+  }
+
+  /* Aviso contacto */
+  .notice{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:var(--muted);font-size:14px}
+  .notice a{color:#93c5fd;text-decoration:none}
+  .notice a:hover{text-decoration:underline}
+
+  /* Panel explicación (se mantiene por si luego lo reactivas) */
+  .reveal{position:absolute;z-index:30;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.85));padding:20px;transition:opacity .3s ease;opacity:0;pointer-events:none}
+  .reveal.show{opacity:1;pointer-events:auto}
+  .card{width:min(720px,94%);background:#0b0b0b;border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,.04);box-shadow:0 20px 60px rgba(0,0,0,.7);color:#c7c7cc;line-height:1.45}
+  .card h3{color:#fff;margin:0 0 8px}
+  .card a{color:var(--red);font-weight:800;text-decoration:none}
+
+  /* Modal Tips */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+  .modal{width:min(720px,100%);background:#121216;border:1px solid #26262d;border-radius:18px;padding:18px 18px 16px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+  .modal h2{margin:6px 0 4px}
+  .tips{margin:2px 0 10px;padding-left:18px;line-height:1.5;color:var(--green)}
+  .close-x{position:absolute;right:16px;top:12px;background:transparent;color:#e5e7eb;border:none;font-size:22px;line-height:1;cursor:pointer}
+
+  /* Mobile */
+  @media (max-width:520px){
+    .skull{width:96px;height:96px;right:8px;bottom:84px}
+    .console{width:92%}
+    .hacked h1{font-size:28px}
+    .cta{bottom:88px}
+    .notice{font-size:13px}
+    .pill{width:100%}
+  }
+</style>
 </head>
 <body>
-  <main class="card">
+  <div class="wrap">
+    <div class="stage" aria-live="polite" aria-label="Simulación de brecha crítica">
+      <canvas id="matrixCanvas"></canvas>
+      <div class="crt"></div>
+      <div class="flicker"></div>
+      <div class="strobe"></div>
 
-    <!-- SIRENA -->
-    <div class="hero" aria-hidden="true">
-      <svg class="siren" viewBox="0 0 256 220" xmlns="http://www.w3.org/2000/svg">
-        <rect x="38" y="168" width="180" height="30" rx="16" fill="#2b2b33"/>
-        <rect x="56" y="160" width="144" height="24" rx="12" fill="#3a3a44"/>
-        <rect x="78" y="42" width="100" height="100" rx="18" fill="#334155"/>
-        <rect x="86" y="50" width="84" height="84" rx="14" fill="#64748b"/>
-        <g class="bulb">
-          <path d="M94 96c0-30 14-54 34-54s34 24 34 54v22H94V96z" fill="#ef4444"/>
-          <path class="glow" d="M94 96c0-30 14-54 34-54s34 24 34 54v22H94V96z" fill="#ef4444" opacity=".55"/>
-          <path d="M165 65 l28 10 -28 10 8-10 -8-10z" fill="#fca5a5" opacity=".9"/>
-          <path d="M91 65 l-28 10 28 10 -8-10 8-10z" fill="#fecaca" opacity=".9"/>
+      <div class="hacked">
+        <h1 class="glitch" data-text="SYSTEM BREACH DETECTED">SYSTEM BREACH DETECTED</h1>
+        <div class="console" id="console"><div id="consoleText"></div><span class="cursor"></span></div>
+      </div>
+
+      <!-- CTA: solo “Consejos rápidos” -->
+      <div class="cta" role="group" aria-label="Acción principal">
+        <button id="btnTips" class="pill pill-ghost">Consejos rápidos</button>
+      </div>
+
+      <div class="notice">
+        ¿Dudas? Escríbenos a:
+        <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>
+        <span style="opacity:.6;"> | </span>
+        o contáctame por Teams:
+        <a href="mailto:victorc@cinemex.net">victorc@cinemex.net</a>
+      </div>
+
+      <!-- Calavera decorativa -->
+      <svg class="skull" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M127 352c-16-42-16-105 32-148 58-52 120-52 168-52s110 0 168 52c48 43 48 106 32 148-24 60-80 104-144 112H271c-8 0-14 6-14 14v6"/>
+          <path d="M176 208c-20 0-36 16-36 36s16 36 36 36 36-16 36-36-16-36-36-36zM336 208c-20 0-36 16-36 36s16 36 36 36 36-16 36-36-16-36-36-36z"/>
+          <path d="M256 288c48 0 88 40 88 88H168c0-48 40-88 88-88z" fill="#111"/>
         </g>
       </svg>
-    </div>
 
-    <h1>Simulación de Seguridad — No te alarmes</h1>
-    <p class="lead">
-      Este es un ejercicio autorizado del área de Ciberseguridad de Grupo Cinemex para <strong>concientizar</strong> sobre los riesgos de conectarte a redes no seguras o abrir enlaces dudosos.
-      <br><br><strong>No se ha accedido a tus datos personales.</strong>
-    </p>
+      <!-- (Panel de explicación permanece por si lo reactivas después) -->
+      <div id="reveal" class="reveal" aria-hidden="true">
+        <div class="card">
+          <h3>Ejercicio de Concientización — Área de Ciberseguridad (Cinemex)</h3>
+          <p>Esta pantalla es una <strong>simulación controlada</strong> para entrenar la detección de incidentes. No se ha comprometido información personal. Si tienes dudas o reportes reales, escribe a: <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a></p>
+        </div>
+      </div>
 
-    <div class="btns" role="group" aria-label="Acciones">
-      <button id="btnContinuar" class="btn btn-primary">Entendido — continuar</button>
-      <button id="btnTips" class="btn btn-ghost">Consejos rápidos</button>
-    </div>
-
-    <p class="notice">
-      ¿Dudas? Escríbenos a:
-      <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>
-      &nbsp;|&nbsp;
-      o contáctame por Teams:
-      <a href="mailto:victorc@cinemex.net">victorc@cinemex.net</a>
-    </p>
-
-    <section id="ok" class="ok" aria-live="polite">
-      <div class="ico">✅</div>
-      <p>Tu participación ayuda a fortalecer la seguridad de Grupo Cinemex.</p>
-      <p>¡Gracias por ser parte de nuestra cultura de ciberseguridad!</p>
-    </section>
-  </main>
-
-  <!-- MODAL -->
-  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal">
-      <button class="close-x" id="closeModal" aria-label="Cerrar">×</button>
-      <h2 id="tipsTitle">Consejos rápidos de seguridad</h2>
-      <ul>
-        <li>Evita conectarte a <strong>Wi-Fi público</strong> sin usar <strong>VPN</strong>.</li>
-        <li>Antes de hacer clic, <strong>revisa la URL</strong> (dominios raros o con faltas = sospechoso).</li>
-        <li>No compartas <strong>contraseñas</strong> ni códigos MFA.</li>
-        <li>Descarga apps y archivos sólo de <strong>fuentes oficiales</strong>.</li>
-        <li>Si dudas, <strong>reporta</strong> a seguridad.</li>
-      </ul>
-      <button id="okTips" class="btn btn-primary">Entendido</button>
     </div>
   </div>
 
-  <!-- AUDIO -->
-  <audio id="alertAudio" src="assets/sirena.mp3" preload="auto"></audio>
+  <!-- MODAL TIPS -->
+  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="tipsTitle" aria-hidden="true">
+    <div class="modal">
+      <button class="close-x" id="closeModal" aria-label="Cerrar">×</button>
+      <h2 id="tipsTitle" style="color:#fff;margin-bottom:6px">Consejos rápidos de seguridad</h2>
+      <ul class="tips">
+        <li>Evita conectarte a <strong>Wi-Fi público</strong> sin usar <strong>VPN</strong>.</li>
+        <li><strong>Verifica la URL</strong> antes de hacer clic (dominios raros = sospechoso).</li>
+        <li>No compartas <strong>contraseñas</strong> ni códigos MFA por correo/WhatsApp.</li>
+        <li>Descarga apps y archivos solo de <strong>fuentes oficiales</strong>.</li>
+        <li>Si dudas, <strong>reporta</strong> a seguridad: <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>.</li>
+      </ul>
+      <div style="display:flex;justify-content:flex-end">
+        <button class="pill pill-ghost" id="okTips">Entendido</button>
+      </div>
+    </div>
+  </div>
 
-  <script>
-    const modal = document.getElementById('modal');
-    const btnTips = document.getElementById('btnTips');
-    const closeModal = document.getElementById('closeModal');
-    const okTips = document.getElementById('okTips');
-    const btnContinuar = document.getElementById('btnContinuar');
-    const ok = document.getElementById('ok');
-    const audio = document.getElementById('alertAudio');
+  <!-- AUDIO (si lo quieres mantener para el ambiente) -->
+  <audio id="alrm" src="assets/sirena.mp3" preload="auto"></audio>
 
-    btnTips.addEventListener('click', () => { modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); });
-    closeModal.addEventListener('click', () => { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); });
-    okTips.addEventListener('click', () => { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); });
-    modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); } });
+<script>
+/* ===== Matrix Rain ===== */
+(function(){
+  const c = document.getElementById('matrixCanvas'), x = c.getContext('2d');
+  let W,H,cols=[],fs=14;
+  function size(){ W=c.width=c.clientWidth; H=c.height=c.clientHeight; init(); }
+  window.addEventListener('resize',size);
+  function init(){ fs=Math.max(10,Math.floor(W/70)); const n=Math.floor(W/fs); cols=Array.from({length:n},()=>Math.random()*H); x.font=fs+'px monospace'; }
+  function draw(){
+    x.fillStyle='rgba(0,0,0,0.18)'; x.fillRect(0,0,W,H);
+    for(let i=0;i<cols.length;i++){
+      const y=cols[i], ch=String.fromCharCode(0x30A0 + Math.random()*96);
+      x.fillStyle=(Math.random()>0.92)?'rgba(255,255,255,0.7)': 'rgba(110,255,150,0.22)';
+      x.fillText(ch,i*fs,y);
+      cols[i]=(y>H+Math.random()*1000)?0:y+fs*(0.5+Math.random()*1.2);
+    }
+    requestAnimationFrame(draw);
+  }
+  size(); requestAnimationFrame(draw);
+})();
 
-    btnContinuar.addEventListener('click', () => {
-      ok.classList.add('show');
-      audio.volume = 0.15;
-      audio.play().catch(()=>{});
-    });
-  </script>
+/* ===== Typewriter ===== */
+(function(){
+  const lines=[
+    "[00:01] DETECTANDO VECTORES... OK",
+    "[00:02] ELEVANDO PRIVILEGIOS... OK",
+    "[00:03] EXPLOTANDO SERVICIO: auth-svc... OK",
+    "[00:04] ENCRIPTANDO VOLUMENES... 23% ███████▌",
+    "[00:05] COMPACTANDO LOGS... OK",
+    "[00:06] CONEXION REMOTA ESTABLECIDA -> 192.168.10.216",
+    "",
+    ">> Sistema en modo cuarentena. Usa el botón para ver consejos."
+  ];
+  const out=document.getElementById('consoleText'); let li=0,ch=0; const speed=24;
+  function type(){
+    if(li>=lines.length) return;
+    const L=lines[li]; out.innerHTML+=L.charAt(ch); ch++;
+    if(ch<L.length){ setTimeout(type, speed+Math.random()*40); }
+    else{ out.innerHTML+='<br/>'; li++; ch=0; setTimeout(type, 250+Math.random()*500); }
+  }
+  setTimeout(type,800);
+})();
+
+/* ===== Modal Tips + Audio ===== */
+(function(){
+  const btnTips=document.getElementById('btnTips');
+  const modal=document.getElementById('modal');
+  const closeModal=document.getElementById('closeModal');
+  const okTips=document.getElementById('okTips');
+  const alrm=document.getElementById('alrm');
+
+  btnTips.addEventListener('click', ()=>{ modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); });
+  function hideModal(){ modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+  closeModal.addEventListener('click', hideModal);
+  okTips.addEventListener('click', hideModal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) hideModal(); });
+
+  // Ambiente sonoro (opcional)
+  function tryPlay(){ try{ alrm.volume=.35; alrm.loop=true; const p=alrm.play(); if(p&&p.catch) p.catch(()=>{});}catch(e){} }
+  tryPlay();
+  ['click','keydown','touchstart'].forEach(evt=>{
+    window.addEventListener(evt,function once(){ tryPlay(); window.removeEventListener(evt,once); });
+  });
+
+  // ESC para cerrar modal
+  window.addEventListener('keydown', e=>{ if(e.key==='Escape') hideModal(); });
+})();
+</script>
 </body>
 </html>
