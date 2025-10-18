@@ -3,206 +3,96 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ejercicio de Concientización | Ciberseguridad Cinemex</title>
-
-  <!-- Favicon simple -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23e11d48'/%3E%3Crect x='30' y='25' width='40' height='35' rx='6' fill='white'/%3E%3Crect x='25' y='60' width='50' height='12' rx='6' fill='white'/%3E%3C/svg%3E" />
-
-  <!-- Social preview -->
-  <meta property="og:title" content="Simulación de Seguridad — Cinemex" />
-  <meta property="og:description" content="Ejercicio autorizado de concientización en seguridad. No te alarmes: no se accedió a tus datos personales." />
-  <meta property="og:type" content="website" />
+  <title>Simulación de Seguridad | Grupo Cinemex</title>
   <meta name="theme-color" content="#111111" />
 
   <style>
     :root{
-      --bg-1:#0c0c0f;
-      --bg-2:#1a0f12;
-      --panel:#141418;
-      --text:#e6e6e9;
-      --muted:#b8b8bf;
-      --accent:#ef4444;
-      --accent-2:#fb7185;
-      --green:#22c55e;
-      --focus:#93c5fd;
+      --bg-1:#0c0c0f; --bg-2:#1a0f12;
+      --text:#e6e6e9; --muted:#b8b8bf;
+      --accent:#ef4444; --accent2:#fb7185; --focus:#93c5fd;
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
       color:var(--text);
-      background: radial-gradient(1200px 600px at 50% -10%, #3b0a0a 0%, transparent 60%),
-                  linear-gradient(180deg,var(--bg-2),var(--bg-1));
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      background:
+        radial-gradient(1100px 520px at 50% -10%, #2a0a0a 0%, transparent 45%),
+        linear-gradient(180deg, #150a0c, #0c0c0f);
+      display:flex;align-items:center;justify-content:center;
       padding:24px;
     }
     .card{
-      width:min(720px,100%);
-      background:linear-gradient(180deg,#17171b,#121215 70%);
-      border:1px solid #24242a;
+      position:relative;
+      width:min(820px,100%);
+      background:linear-gradient(180deg,#1a1b20,#131419 70%);
+      border:1px solid rgba(255,255,255,.10);
       border-radius:20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.45);
-      padding:28px 24px 20px;
+      padding:28px 24px 22px;
+      box-shadow:
+        0 20px 50px rgba(0,0,0,.60),
+        0 0 0 1px rgba(255,255,255,.04),
+        0 0 60px rgba(239,68,68,.18);
+      overflow:hidden;
     }
-    .hero{
-      display:grid;
-      place-items:center;
-      padding:6px 0 10px;
-    }
-    /* Sirena SVG animada */
+
+    .hero{display:grid;place-items:center;padding:8px 0 10px}
     .siren{
       width:min(220px,60vw);
-      filter: drop-shadow(0 6px 18px rgba(239,68,68,.35));
-      animation: float 3s ease-in-out infinite;
+      filter:drop-shadow(0 8px 22px rgba(239,68,68,.45));
+      animation:float 3s ease-in-out infinite
     }
-    .bulb{
-      animation: pulse 1.2s ease-in-out infinite;
-      transform-origin:center 65%;
-    }
-    .glow{
-      opacity:.75;
-      animation: glow 1.2s ease-in-out infinite;
-    }
+    .bulb{animation:pulse 1.2s ease-in-out infinite;transform-origin:center 65%}
+    .glow{opacity:.9;animation:glow 1.2s ease-in-out infinite}
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
     @keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 
-    h1{
-      text-align:center;
-      font-size: clamp(22px, 2.6vw, 34px);
-      margin:6px 0 10px;
-    }
-    p.lead{
-      text-align:center;
-      color:#d9d9de;
-      font-size: clamp(14px, 1.6vw, 18px);
-      line-height:1.45;
-      margin:0 auto 14px;
-      width:min(62ch, 92%);
-    }
-    .notice{
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      margin-top:2px;
-    }
-    .btns{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin:18px 0 8px;
-    }
-    .btn{
-      appearance:none;
-      border:none;
-      border-radius:14px;
-      padding:14px 18px;
-      font-weight:700;
-      cursor:pointer;
-      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
-      outline: none;
-    }
-    .btn:focus-visible{ box-shadow: 0 0 0 3px var(--focus); }
-    .btn-primary{
-      background: linear-gradient(180deg, var(--accent), #dc2626);
-      color:#fff;
-      box-shadow: 0 8px 18px rgba(239,68,68,.28);
-    }
-    .btn-primary:hover{ background: linear-gradient(180deg, var(--accent-2), #ef4444) }
-    .btn-primary:active{ transform: translateY(1px) }
-    .btn-ghost{
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .btn-ghost:hover{ background: rgba(255,255,255,.10) }
+    h1{margin:6px 0 12px;text-align:center;font-size:clamp(22px,2.8vw,36px);color:#f3f4f6;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+    .lead{margin:0 auto 14px;text-align:center;color:#e5e7eb;font-size:clamp(14px,1.6vw,18px);line-height:1.5;width:min(62ch,92%)}
+    .notice{text-align:center;color:var(--muted);font-size:14px;margin-top:2px}
+    .btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0 8px}
+    .btn{border:0;border-radius:14px;padding:14px 18px;font-weight:700;cursor:pointer;transition:transform .06s,background .2s,box-shadow .2s}
+    .btn:focus-visible{box-shadow:0 0 0 3px var(--focus)}
+    .btn-primary{background:linear-gradient(180deg,var(--accent),#dc2626);color:#fff;box-shadow:0 8px 18px rgba(239,68,68,.28)}
+    .btn-primary:hover{background:linear-gradient(180deg,var(--accent2),#ef4444)}
+    .btn-primary:active{transform:translateY(1px)}
+    .btn-ghost{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.12)}
+    .btn-ghost:hover{background:rgba(255,255,255,.10)}
+    a{color:#93c5fd;text-decoration:none} a:hover{text-decoration:underline}
 
-    .footer{
-      margin-top:16px;
-      border-top:1px dashed #2b2b33;
-      padding-top:12px;
-      font-size:14px;
-      color:var(--muted);
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    a{ color:#93c5fd; text-decoration:none }
-    a:hover{ text-decoration:underline }
+    .ok{display:none;text-align:center;padding:8px 6px 2px}
+    .ok.show{display:block}
+    .ok .ico{font-size:32px}
 
-    /* Modal */
-    .modal-backdrop{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.5);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      z-index:50;
-    }
-    .modal{
-      width:min(720px,100%);
-      background:#121216;
-      border:1px solid #26262d;
-      border-radius:18px;
-      padding:18px 18px 16px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.5);
-    }
-    .modal h2{ margin:6px 0 4px }
-    .tips{ margin:2px 0 10px; padding-left:18px; line-height:1.5; }
-    .tip-ok{
-      display:inline-flex; align-items:center; gap:8px;
-      background: rgba(34,197,94,.11);
-      color:#d1fae5;
-      border:1px solid rgba(34,197,94,.32);
-      padding:6px 10px; border-radius:999px; font-size:13px;
-    }
-    .close-x{
-      position:absolute; right:16px; top:12px;
-      background:transparent; color:#e5e7eb; border:none;
-      font-size:22px; line-height:1; cursor:pointer;
-    }
+    /* MODAL */
+    .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);align-items:center;justify-content:center;z-index:1000}
+    .modal{position:relative;width:min(720px,100%);background:#121216;border:1px solid #26262d;border-radius:18px;padding:22px;color:#fff}
+    .close-x{position:absolute;top:12px;right:16px;background:transparent;border:0;color:#fff;font-size:26px;cursor:pointer;opacity:.9}
+    .close-x:hover{opacity:1}
+    .modal h2{margin:6px 0 10px}
+    .modal ul{margin:0 0 14px;padding-left:20px;line-height:1.55}
 
-    /* Sección “gracias” */
-    .ok{ display:none; text-align:center; padding:8px 6px 2px; }
-    .ok.show{ display:block }
-    .ok .ico{ font-size:32px }
-
-    /* ======= Corrección responsive para móviles ======= */
-    @media (max-width: 480px) {
-      body { padding: 12px; }
-      .card { padding: 18px 14px 16px; border-radius: 14px; }
-      h1 {
-        font-size: 20px;
-        line-height: 1.25;
-        text-align: left;     /* alinear a la izquierda en móviles */
-      }
-      p.lead {
-        width: 100%;          /* evita desfase por límites de ancho */
-        text-align: left;     /* alinear texto al margen */
-        font-size: 15px;
-        line-height: 1.45;
-        margin: 8px 0 14px 0;
-      }
-      .btns {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
-      }
-      .btn { width: 100%; justify-content: center; }
-      .notice { text-align: left; font-size: 13px; }
+    /* RESPONSIVE */
+    @media (max-width:480px){
+      body{padding:12px}
+      .card{padding:16px;border-radius:14px}
+      h1{text-align:left;font-size:20px;line-height:1.25}
+      .lead{width:100%;text-align:left;font-size:15px;line-height:1.45;margin:8px 0 14px}
+      .btns{flex-direction:column;gap:10px;align-items:stretch}
+      .btn{width:100%;justify-content:center}
+      .notice{text-align:left;font-size:13px}
+      .modal{padding:18px}
+      .close-x{font-size:24px}
     }
   </style>
 </head>
 <body>
-  <main class="card" role="main" aria-labelledby="title">
+  <main class="card">
+
+    <!-- SIRENA -->
     <div class="hero" aria-hidden="true">
-      <!-- Sirena SVG -->
       <svg class="siren" viewBox="0 0 256 220" xmlns="http://www.w3.org/2000/svg">
         <rect x="38" y="168" width="180" height="30" rx="16" fill="#2b2b33"/>
         <rect x="56" y="160" width="144" height="24" rx="12" fill="#3a3a44"/>
@@ -217,9 +107,9 @@
       </svg>
     </div>
 
-    <h1 id="title">Simulación de Seguridad — No te alarmes</h1>
+    <h1>Simulación de Seguridad — No te alarmes</h1>
     <p class="lead">
-      Este es un ejercicio autorizado del área de Ciberseguridad de Cinemex para <strong>concientizar</strong> sobre los riesgos de conectarte a redes no seguras o abrir enlaces dudosos.
+      Este es un ejercicio autorizado del área de Ciberseguridad de Grupo Cinemex para <strong>concientizar</strong> sobre los riesgos de conectarte a redes no seguras o abrir enlaces dudosos.
       <br><br><strong>No se ha accedido a tus datos personales.</strong>
     </p>
 
@@ -228,37 +118,38 @@
       <button id="btnTips" class="btn btn-ghost">Consejos rápidos</button>
     </div>
 
-    <p class="notice">¿Dudas? Escríbenos a:
+    <p class="notice">
+      ¿Dudas? Escríbenos a:
       <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>
+      &nbsp;|&nbsp;
+      o contáctame por Teams:
+      <a href="mailto:victorc@cinemex.net">victorc@cinemex.net</a>
     </p>
 
-    <!-- Bloque “gracias” que aparece tras continuar -->
     <section id="ok" class="ok" aria-live="polite">
       <div class="ico">✅</div>
-      <p>¡Gracias por participar! Tu respuesta quedó registrada.</p>
-      <p><span class="tip-ok">Tip</span> Guarda este enlace y compártelo sólo para fines del ejercicio.</p>
+      <p>Tu participación ayuda a fortalecer la seguridad de Grupo Cinemex.</p>
+      <p>¡Gracias por ser parte de nuestra cultura de ciberseguridad!</p>
     </section>
   </main>
 
-  <!-- Modal Tips -->
-  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="tipsTitle" aria-hidden="true">
+  <!-- MODAL -->
+  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal">
       <button class="close-x" id="closeModal" aria-label="Cerrar">×</button>
       <h2 id="tipsTitle">Consejos rápidos de seguridad</h2>
-      <ul class="tips">
+      <ul>
         <li>Evita conectarte a <strong>Wi-Fi público</strong> sin usar <strong>VPN</strong>.</li>
-        <li>Antes de hacer clic, <strong>revisa la URL</strong>: dominios raros o con faltas → sospechoso.</li>
-        <li>No compartas <strong>contraseñas</strong> ni códigos MFA por correo/WhatsApp.</li>
+        <li>Antes de hacer clic, <strong>revisa la URL</strong> (dominios raros o con faltas = sospechoso).</li>
+        <li>No compartas <strong>contraseñas</strong> ni códigos MFA.</li>
         <li>Descarga apps y archivos sólo de <strong>fuentes oficiales</strong>.</li>
-        <li>Si dudas, <strong>reporta</strong> a seguridad: <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>.</li>
+        <li>Si dudas, <strong>reporta</strong> a seguridad.</li>
       </ul>
-      <div class="btns" style="justify-content:flex-end">
-        <button class="btn btn-ghost" id="okTips">Entendido</button>
-      </div>
+      <button id="okTips" class="btn btn-primary">Entendido</button>
     </div>
   </div>
 
-  <!-- Audio: cambia src por tu archivo /assets/sirena.mp3 -->
+  <!-- AUDIO -->
   <audio id="alertAudio" src="assets/sirena.mp3" preload="auto"></audio>
 
   <script>
@@ -270,39 +161,16 @@
     const ok = document.getElementById('ok');
     const audio = document.getElementById('alertAudio');
 
-    function openModal(){
-      modal.style.display = 'flex';
-      modal.setAttribute('aria-hidden','false');
-    }
-    function hideModal(){
-      modal.style.display = 'none';
-      modal.setAttribute('aria-hidden','true');
-    }
-    btnTips.addEventListener('click', openModal);
-    closeModal.addEventListener('click', hideModal);
-    okTips.addEventListener('click', hideModal);
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) hideModal(); });
+    btnTips.addEventListener('click', () => { modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); });
+    closeModal.addEventListener('click', () => { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); });
+    okTips.addEventListener('click', () => { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); });
+    modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); } });
 
-    btnContinuar.addEventListener('click', async ()=>{
-      try{ localStorage.setItem('cinemex-awareness-ack','1'); }catch(e){}
+    btnContinuar.addEventListener('click', () => {
       ok.classList.add('show');
-      tryPlayAudio(true);
-      // Redirección opcional:
-      // setTimeout(()=> location.href='https://www.cinemex.com', 1500);
+      audio.volume = 0.15;
+      audio.play().catch(()=>{});
     });
-
-    async function tryPlayAudio(fromUserGesture=false){
-      if(!audio) return;
-      try { audio.volume = 0.25; await audio.play(); }
-      catch(err){ if(fromUserGesture){ setTimeout(()=> audio.play().catch(()=>{}), 50); } }
-    }
-    document.addEventListener('DOMContentLoaded', ()=> { tryPlayAudio(false); });
-
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') hideModal(); });
-
-    // Ping métrico mínimo (opcional)
-    (function simplePing(){ try{ fetch('https://httpbin.org/status/204',{mode:'no-cors'}).catch(()=>{}); }catch(_){}})();
   </script>
 </body>
 </html>
-
