@@ -2,118 +2,306 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ejercicio de Concienciación — Seguridad</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ejercicio de Concientización | Ciberseguridad Cinemex</title>
+
+  <!-- Favicon simple -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23e11d48'/%3E%3Crect x='30' y='25' width='40' height='35' rx='6' fill='white'/%3E%3Crect x='25' y='60' width='50' height='12' rx='6' fill='white'/%3E%3C/svg%3E" />
+
+  <!-- Social preview -->
+  <meta property="og:title" content="Simulación de Seguridad — Cinemex" />
+  <meta property="og:description" content="Ejercicio autorizado de concientización en seguridad. No te alarmes: no se accedió a tus datos personales." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#111111" />
+
   <style>
     :root{
-      --card:#121416;
-      --accent:#ff4d4d;
-      --muted:#bfc3c7;
-      --radius:14px;
-      --maxw:820px;
-      font-family: Inter, Roboto, Arial, Helvetica, sans-serif;
+      --bg-1:#0c0c0f;
+      --bg-2:#1a0f12;
+      --panel:#141418;
+      --text:#e6e6e9;
+      --muted:#b8b8bf;
+      --accent:#ef4444;
+      --accent-2:#fb7185;
+      --green:#22c55e;
+      --focus:#93c5fd;
     }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#0b0c0d 0%, #101214 100%);color:#fff}
-    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 50% -10%, #3b0a0a 0%, transparent 60%),
+                  linear-gradient(180deg,var(--bg-2),var(--bg-1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
     .card{
-      width:100%;max-width:var(--maxw);
-      background:linear-gradient(180deg,var(--card),#0d0e10);
-      border-radius:var(--radius);
-      box-shadow:0 10px 30px rgba(2,6,10,0.7);
-      padding:28px;display:grid;grid-template-columns:170px 1fr;gap:24px;align-items:center
+      width:min(720px,100%);
+      background:linear-gradient(180deg,#17171b,#121215 70%);
+      border:1px solid #24242a;
+      border-radius:20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      padding:28px 24px 20px;
     }
-    .media{display:flex;flex-direction:column;align-items:center;gap:14px}
-    .media img.siren{width:150px;height:auto;border-radius:10px}
-    .media img.icon{width:120px;height:auto;animation:pulse 1.6s infinite}
-    .right{min-width:0}
-    h1{margin:0 0 8px;font-size:26px;letter-spacing:0.2px}
-    p.lead{margin:0 0 14px;color:var(--muted);line-height:1.35}
-    .btn-wrap{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700;cursor:pointer}
-    .btn.primary{background:var(--accent);color:#fff;border:0}
-    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#d2d6da}
-    .small{font-size:13px;color:#9ea3a8;margin-top:12px}
-    .legal{font-size:12px;color:#8f9396;margin-top:10px}
-    .logo-wrap{margin-top:18px;text-align:center;opacity:.8}
-    .logo-wrap img{height:40px}
-    @media (max-width:720px){
-      .card{grid-template-columns:1fr;justify-items:center;text-align:center;padding:22px}
-      h1{font-size:22px}
+    .hero{
+      display:grid;
+      place-items:center;
+      padding:6px 0 10px;
     }
-    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.04)}100%{transform:scale(1)}}
+    /* Sirena SVG animada */
+    .siren{
+      width:min(220px,60vw);
+      filter: drop-shadow(0 6px 18px rgba(239,68,68,.35));
+      animation: float 3s ease-in-out infinite;
+    }
+    .bulb{
+      animation: pulse 1.2s ease-in-out infinite;
+      transform-origin:center 65%;
+    }
+    .glow{
+      opacity:.75;
+      animation: glow 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+    @keyframes glow{0%,100%{opacity:.5}50%{opacity:1}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+    h1{
+      text-align:center;
+      font-size: clamp(22px, 2.6vw, 34px);
+      margin:6px 0 10px;
+    }
+    p.lead{
+      text-align:center;
+      color:#d9d9de;
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height:1.45;
+      margin:0 auto 14px;
+      width:min(62ch, 92%);
+    }
+    .notice{
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      margin-top:2px;
+    }
+    .btns{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin:18px 0 8px;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:14px;
+      padding:14px 18px;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+      outline: none;
+    }
+    .btn:focus-visible{ box-shadow: 0 0 0 3px var(--focus); }
+    .btn-primary{
+      background: linear-gradient(180deg, var(--accent), #dc2626);
+      color:#fff;
+      box-shadow: 0 8px 18px rgba(239,68,68,.28);
+    }
+    .btn-primary:hover{ background: linear-gradient(180deg, var(--accent-2), #ef4444) }
+    .btn-primary:active{ transform: translateY(1px) }
+    .btn-ghost{
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .btn-ghost:hover{ background: rgba(255,255,255,.10) }
+
+    .footer{
+      margin-top:16px;
+      border-top:1px dashed #2b2b33;
+      padding-top:12px;
+      font-size:14px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    a{ color:#93c5fd; text-decoration:none }
+    a:hover{ text-decoration:underline }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.5);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:50;
+    }
+    .modal{
+      width:min(720px,100%);
+      background:#121216;
+      border:1px solid #26262d;
+      border-radius:18px;
+      padding:18px 18px 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.5);
+    }
+    .modal h2{ margin:6px 0 4px }
+    .tips{ margin:2px 0 10px; padding-left:18px; line-height:1.5; }
+    .tip-ok{
+      display:inline-flex; align-items:center; gap:8px;
+      background: rgba(34,197,94,.11);
+      color:#d1fae5;
+      border:1px solid rgba(34,197,94,.32);
+      padding:6px 10px; border-radius:999px; font-size:13px;
+    }
+    .close-x{
+      position:absolute; right:16px; top:12px;
+      background:transparent; color:#e5e7eb; border:none;
+      font-size:22px; line-height:1; cursor:pointer;
+    }
+
+    /* Sección “gracias” */
+    .ok{ display:none; text-align:center; padding:8px 6px 2px; }
+    .ok.show{ display:block }
+    .ok .ico{ font-size:32px }
+
+    /* ======= Corrección responsive para móviles ======= */
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      .card { padding: 18px 14px 16px; border-radius: 14px; }
+      h1 {
+        font-size: 20px;
+        line-height: 1.25;
+        text-align: left;     /* alinear a la izquierda en móviles */
+      }
+      p.lead {
+        width: 100%;          /* evita desfase por límites de ancho */
+        text-align: left;     /* alinear texto al margen */
+        font-size: 15px;
+        line-height: 1.45;
+        margin: 8px 0 14px 0;
+      }
+      .btns {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+      }
+      .btn { width: 100%; justify-content: center; }
+      .notice { text-align: left; font-size: 13px; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" role="dialog" aria-labelledby="title" aria-describedby="desc">
-      <!-- COLUMNA IZQUIERDA: SIRENA GIF + IMAGEN PRINCIPAL -->
-      <div class="media">
-        <img class="siren" src="sirena.gif" alt="Sirena de alerta animada" onerror="this.style.display='none'">
-        <img class="icon" src="alerta.png" alt="Alerta de seguridad">
-      </div>
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="hero" aria-hidden="true">
+      <!-- Sirena SVG -->
+      <svg class="siren" viewBox="0 0 256 220" xmlns="http://www.w3.org/2000/svg">
+        <rect x="38" y="168" width="180" height="30" rx="16" fill="#2b2b33"/>
+        <rect x="56" y="160" width="144" height="24" rx="12" fill="#3a3a44"/>
+        <rect x="78" y="42" width="100" height="100" rx="18" fill="#334155"/>
+        <rect x="86" y="50" width="84" height="84" rx="14" fill="#64748b"/>
+        <g class="bulb">
+          <path d="M94 96c0-30 14-54 34-54s34 24 34 54v22H94V96z" fill="#ef4444"/>
+          <path class="glow" d="M94 96c0-30 14-54 34-54s34 24 34 54v22H94V96z" fill="#ef4444" opacity=".55"/>
+          <path d="M165 65 l28 10 -28 10 8-10 -8-10z" fill="#fca5a5" opacity=".9"/>
+          <path d="M91 65 l-28 10 28 10 -8-10 8-10z" fill="#fecaca" opacity=".9"/>
+        </g>
+      </svg>
+    </div>
 
-      <!-- COLUMNA DERECHA: TEXTO Y BOTONES -->
-      <div class="right">
-        <h1 id="title">Fuiste hackeado</h1>
-        <p id="desc" class="lead">
-          Este es un ejercicio autorizado de concienciación en seguridad. <strong>No entres en pánico.</strong><br>
-          No se ha accedido a tus datos personales; el objetivo es sensibilizar sobre el riesgo de conectarse a redes no seguras.
-        </p>
+    <h1 id="title">Simulación de Seguridad — No te alarmes</h1>
+    <p class="lead">
+      Este es un ejercicio autorizado del área de Ciberseguridad de Cinemex para <strong>concientizar</strong> sobre los riesgos de conectarte a redes no seguras o abrir enlaces dudosos.
+      <br><br><strong>No se ha accedido a tus datos personales.</strong>
+    </p>
 
-        <div class="btn-wrap" role="group" aria-label="Acciones">
-          <a class="btn primary" href="#" onclick="submitAndContinue(event)">Entendido — continuar</a>
-          <a class="btn secondary" href="https://www.incibe.es" target="_blank" rel="noopener">Consejos rápidos</a>
-        </div>
+    <div class="btns" role="group" aria-label="Acciones">
+      <button id="btnContinuar" class="btn btn-primary">Entendido — continuar</button>
+      <button id="btnTips" class="btn btn-ghost">Consejos rápidos</button>
+    </div>
 
-        <div class="small">
-          ¿Dudas? Contacta a: <a href="mailto:seguridad@tuempresa.mx" style="color:#e7edf1">seguridad.informacion@cinemex.net</a>
-        </div>
+    <p class="notice">¿Dudas? Escríbenos a:
+      <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>
+    </p>
 
-        <div class="legal">
-          Nota: este mensaje forma parte de un simulacro de capacitación.
-     
-        </div>
+    <!-- Bloque “gracias” que aparece tras continuar -->
+    <section id="ok" class="ok" aria-live="polite">
+      <div class="ico">✅</div>
+      <p>¡Gracias por participar! Tu respuesta quedó registrada.</p>
+      <p><span class="tip-ok">Tip</span> Guarda este enlace y compártelo sólo para fines del ejercicio.</p>
+    </section>
+  </main>
 
-        <div class="logo-wrap">
-          <img src="logo.png" alt="Logo de la organización" onerror="this.style.display='none'">
-        </div>
+  <!-- Modal Tips -->
+  <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="tipsTitle" aria-hidden="true">
+    <div class="modal">
+      <button class="close-x" id="closeModal" aria-label="Cerrar">×</button>
+      <h2 id="tipsTitle">Consejos rápidos de seguridad</h2>
+      <ul class="tips">
+        <li>Evita conectarte a <strong>Wi-Fi público</strong> sin usar <strong>VPN</strong>.</li>
+        <li>Antes de hacer clic, <strong>revisa la URL</strong>: dominios raros o con faltas → sospechoso.</li>
+        <li>No compartas <strong>contraseñas</strong> ni códigos MFA por correo/WhatsApp.</li>
+        <li>Descarga apps y archivos sólo de <strong>fuentes oficiales</strong>.</li>
+        <li>Si dudas, <strong>reporta</strong> a seguridad: <a href="mailto:seguridad.informacion@cinemex.net">seguridad.informacion@cinemex.net</a>.</li>
+      </ul>
+      <div class="btns" style="justify-content:flex-end">
+        <button class="btn btn-ghost" id="okTips">Entendido</button>
       </div>
     </div>
   </div>
 
-  <!-- AUDIO AUTOMÁTICO -->
-  <audio id="sirenAudio" src="sirena.mp3" preload="auto" loop></audio>
+  <!-- Audio: cambia src por tu archivo /assets/sirena.mp3 -->
+  <audio id="alertAudio" src="assets/sirena.mp3" preload="auto"></audio>
 
   <script>
-    const audioEl = document.getElementById('sirenAudio');
+    const modal = document.getElementById('modal');
+    const btnTips = document.getElementById('btnTips');
+    const closeModal = document.getElementById('closeModal');
+    const okTips = document.getElementById('okTips');
+    const btnContinuar = document.getElementById('btnContinuar');
+    const ok = document.getElementById('ok');
+    const audio = document.getElementById('alertAudio');
 
-    // Volumen ajustado
-    audioEl.volume = 0.85;
+    function openModal(){
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
+    }
+    function hideModal(){
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+    }
+    btnTips.addEventListener('click', openModal);
+    closeModal.addEventListener('click', hideModal);
+    okTips.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) hideModal(); });
 
-    // Intentar reproducir automáticamente al cargar
-    document.addEventListener('DOMContentLoaded', () => {
-      playAudio();
+    btnContinuar.addEventListener('click', async ()=>{
+      try{ localStorage.setItem('cinemex-awareness-ack','1'); }catch(e){}
+      ok.classList.add('show');
+      tryPlayAudio(true);
+      // Redirección opcional:
+      // setTimeout(()=> location.href='https://www.cinemex.com', 1500);
     });
 
-    // En caso de que el navegador bloquee autoplay, lo desbloquea al primer toque
-    ['click', 'touchstart', 'keydown'].forEach(ev => {
-      document.addEventListener(ev, () => {
-        playAudio();
-      }, { once: true });
-    });
-
-    function playAudio() {
-      audioEl.muted = false;
-      audioEl.play().catch(() => {
-        // Algunos navegadores requieren interacción, se intentará de nuevo al primer toque
-      });
+    async function tryPlayAudio(fromUserGesture=false){
+      if(!audio) return;
+      try { audio.volume = 0.25; await audio.play(); }
+      catch(err){ if(fromUserGesture){ setTimeout(()=> audio.play().catch(()=>{}), 50); } }
     }
+    document.addEventListener('DOMContentLoaded', ()=> { tryPlayAudio(false); });
 
-    // Botón principal
-    function submitAndContinue(evt){
-      evt.preventDefault();
-      alert("Simulación completada. Gracias por participar.");
-    }
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') hideModal(); });
+
+    // Ping métrico mínimo (opcional)
+    (function simplePing(){ try{ fetch('https://httpbin.org/status/204',{mode:'no-cors'}).catch(()=>{}); }catch(_){}})();
   </script>
 </body>
 </html>
